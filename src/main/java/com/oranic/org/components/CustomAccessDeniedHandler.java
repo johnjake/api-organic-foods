@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     public static final Logger LOG = Logger.getLogger(String.valueOf(CustomAccessDeniedHandler.class));
-    
+
     @Override
     public void handle(
             HttpServletRequest request,
