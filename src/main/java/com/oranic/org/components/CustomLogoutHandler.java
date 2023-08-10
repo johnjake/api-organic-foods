@@ -1,14 +1,14 @@
 package com.oranic.org.components;
 
+import com.oranic.org.utilities.LoggerUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
-import java.util.logging.Logger;
-
 public class CustomLogoutHandler implements LogoutHandler {
-    public static final Logger LOG = Logger.getLogger(String.valueOf(CustomLogoutHandler.class));
+    public static final Logger LOG = LoggerUtils.getLogger(CustomLogoutHandler.class);
     @Override
     public void logout(
             HttpServletRequest request,
@@ -16,6 +16,6 @@ public class CustomLogoutHandler implements LogoutHandler {
             Authentication authentication
     ) {
         var userName = authentication.getName();
-        LOG.warning("username: "+ userName);
+        LOG.warn("username: "+ userName);
     }
 }
