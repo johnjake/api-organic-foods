@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  main:
+    web-application-type: servlet
+
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://www.organi.one:3306/organic
+    username: organicfoods
+    password: livelove_2000
+    hikari:
+      max-lifetime: 1800000
+      maximum-pool-size: 10
+
+  mvc:
+    view:
+      prefix: /templates/
+
+logging:
+  level:
+    org:
+      thymeleaf: DEBUG
+
+application:
+  security:
+    jwt:
+      secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+      expiration: 86400000 # a day
+      refresh-token:
+        expiration: 604800000 # 7 days
+
+com:
+  organimaster:
+    org:
+      default-user:
+        email: admin@mail.com
+        password: password123
+        managerEmail: manager@mail.com
+        managerPassword: managerPassword
