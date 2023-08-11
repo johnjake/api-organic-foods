@@ -4,10 +4,12 @@ import com.oranic.org.services.interfaces.JwtInterService;
 import com.oranic.org.utilities.TokenUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashMap;
 
+@Service
 public class JwtService implements JwtInterService {
 
     @Override
