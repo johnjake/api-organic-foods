@@ -3,7 +3,9 @@ package com.oranic.org.repository;
 import com.oranic.org.model.token.RegToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface RegistrationTokenRepository extends JpaRepository<RegToken, Integer> {
     @Query(value = """
      select rt.regKey from RegToken rt
