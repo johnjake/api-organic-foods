@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oranic.org.model.token.Token;
 import com.oranic.org.model.token.TokenType;
 import com.oranic.org.model.users.User;
+import com.oranic.org.playload.request.AccessLogoutRequest;
 import com.oranic.org.playload.request.AuthenticationRequest;
 import com.oranic.org.playload.request.RegisterRequest;
+import com.oranic.org.playload.response.AuthLogoutResponse;
 import com.oranic.org.playload.response.AuthenticationResponse;
 import com.oranic.org.repository.TokenRepository;
 import com.oranic.org.repository.UserRepository;
@@ -67,6 +69,33 @@ public class AuthenticationService implements AuthenticationInterService {
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
+                .build();
+    }
+
+    @Override
+    public AuthLogoutResponse logout(HttpServletRequest request) {
+        final String tokenBearer;
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if ((authHeader != null) && authHeader.startsWith("Bearer ")) {
+            tokenBearer = authHeader.substring(7);
+            var tokenValid = tokenRepository.verifyValidityToken(tokenBearer);
+            if (tokenValid > 0) return logoutResponse("Invalid token!");
+            else {
+                var tokenResult = tokenRepository.updateTokenToLogout(tokenBearer);
+                if (tokenResult > 0)
+                    return logoutResponse("Logout successful");
+                else
+                    return logoutResponse("An error occurred during logout!");
+            }
+        } else {
+            return logoutResponse("Token not found in the request.");
+        }
+    }
+
+    private AuthLogoutResponse logoutResponse(String param) {
+        return AuthLogoutResponse
+                .builder()
+                .message(param)
                 .build();
     }
 

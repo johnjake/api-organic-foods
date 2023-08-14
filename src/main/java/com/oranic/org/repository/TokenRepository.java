@@ -1,7 +1,9 @@
 package com.oranic.org.repository;
 
 import com.oranic.org.model.token.Token;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -17,4 +19,12 @@ public interface TokenRepository extends JpaRepository<Token, Integer> {
     List<Token> findAllValidTokenByUser(Long userId);
 
     Optional<Token> findByToken(String token);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Token t SET t.expired = true, t.revoked = true WHERE t.token = :tokenValue")
+    int updateTokenToLogout(String tokenValue);
+
+    @Query("select count(t) from Token t where t.token = :tokenValue and t.revoked = true and t.expired = true")
+    int verifyValidityToken(String tokenValue);
 }

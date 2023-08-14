@@ -17,7 +17,10 @@ public class CustomLogoutHandler implements LogoutHandler {
             HttpServletResponse response,
             Authentication authentication
     ) {
-        var userName = authentication.getName();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return;
+        }
+        var userName = authentication.isAuthenticated();
         LOG.warn("username: "+ userName);
     }
 }
