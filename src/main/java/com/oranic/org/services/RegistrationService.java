@@ -1,5 +1,6 @@
 package com.oranic.org.services;
 
+import com.oranic.org.model.token.RegToken;
 import com.oranic.org.playload.request.AccessTokenRequest;
 import com.oranic.org.playload.request.RegTokenRequest;
 import com.oranic.org.playload.response.AccessTokenResponse;
@@ -15,11 +16,20 @@ public class RegistrationService implements RegistrationInterService {
     private RegistrationTokenRepository repository;
     @Override
     public TokenValidationResponse registerToken(RegTokenRequest param) {
-        return null;
+        var tokenized = RegToken.builder()
+                .regKey(param.getToken())
+                .user_id(param.getUserId())
+                .build();
+        var response = repository.save(tokenized);
+        return TokenValidationResponse
+                .builder()
+                .success(response.getRegKey())
+                .build();
     }
 
     @Override
     public AccessTokenResponse getTokenRegister(AccessTokenRequest request) {
-        return null;
+        var tokenized = repository.getTokenByEmail(request.getEmail());
+        return AccessTokenResponse.builder().accessToken(tokenized).build();
     }
 }
