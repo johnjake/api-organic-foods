@@ -1,7 +1,9 @@
 package com.oranic.org.controller;
 
+import com.oranic.org.playload.request.AccessLogoutRequest;
 import com.oranic.org.playload.request.AuthenticationRequest;
 import com.oranic.org.playload.request.RegisterRequest;
+import com.oranic.org.playload.response.AuthLogoutResponse;
 import com.oranic.org.playload.response.AuthenticationResponse;
 import com.oranic.org.services.interfaces.AuthenticationInterService;
 import jakarta.servlet.http.Cookie;
@@ -21,6 +23,7 @@ import java.io.IOException;
 public class AuthenticationController {
     private final AuthenticationInterService service;
     private final AuthenticationResponse authResponse = new AuthenticationResponse();
+    private final AuthLogoutResponse logoutResponse = new AuthLogoutResponse();
 
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
@@ -44,6 +47,15 @@ public class AuthenticationController {
         authResponse.setAccessToken(tokenValue);
         return ResponseEntity.ok(authResponse);
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<AuthLogoutResponse> logout(
+            HttpServletRequest request
+    ) {
+        var response = service.logout(request);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/refresh-token")
     public void refreshToken(
             HttpServletRequest request,
